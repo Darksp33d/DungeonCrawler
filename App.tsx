@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { LoadingScreen } from './src/components/LoadingScreen';
+import { Game } from './src/components/Game';
+
+export type RootStackParamList = {
+  Loading: undefined;
+  Game: { saveId?: string };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="Loading"
+        screenOptions={{ 
+          headerShown: false,
+          animation: 'fade'
+        }}
+      >
+        <Stack.Screen name="Loading" component={LoadingScreen} />
+        <Stack.Screen 
+          name="Game" 
+          component={Game}
+          initialParams={{ saveId: undefined }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
